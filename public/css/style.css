@@ -1,0 +1,881 @@
+@font-face {
+    font-family: "Typepunk";
+    src: url("../assets/fonts/Typepunk-Regular.woff2") format("woff2");
+    font-weight: normal;
+    font-style: normal;
+}
+
+/*------------------------------------------------------------------------------
+  General & Layout
+------------------------------------------------------------------------------*/
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: var(--color-bg);
+    color: var(--color-ink);
+    font-family: sans-serif;
+    overflow: hidden;
+    background-image: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(170, 255, 17, 0.01) 2px,
+        rgba(170, 255, 17, 0.01) 4px
+    );
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    position: relative;
+    text-align: center;
+    gap: 50px;
+}
+
+/*------------------------------------------------------------------------------
+  Background
+------------------------------------------------------------------------------*/
+.background-texture {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("../assets/backgrounds/x6lzmo.png");
+    background-size: cover;
+    background-position: center;
+    opacity: 0.4;
+    z-index: -1;
+    animation: subtle-shift 20s ease-in-out infinite alternate;
+}
+
+/*------------------------------------------------------------------------------
+  Logo
+------------------------------------------------------------------------------*/
+.logo-text {
+    font-family: "Typepunk", sans-serif;
+    font-size: 8em;
+    font-weight: normal;
+    color: var(--logo-color-default);
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s ease;
+    text-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.8),
+        0 0 8px var(--logo-color-default);
+    letter-spacing: 0.08em;
+    font-variant: small-caps;
+    z-index: 10;
+    position: relative;
+}
+
+.logo-text:hover {
+    transform: translateY(-2px);
+    text-shadow:
+        0 2px 6px rgba(0, 0, 0, 0.9),
+        0 0 12px var(--logo-color-default);
+}
+
+.logo-text.active {
+    color: var(--logo-color-active);
+    text-shadow:
+        0 2px 6px rgba(0, 0, 0, 0.9),
+        0 0 15px var(--logo-color-active);
+    animation: subtle-pulse 3s ease-in-out infinite alternate;
+}
+
+.logo-text.paused {
+    color: var(--logo-color-paused);
+    text-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.8),
+        0 0 8px var(--logo-color-paused);
+}
+
+.logo-text.loading {
+    animation: loading-pulse 1.5s infinite;
+    position: relative;
+}
+
+.logo-text.loading::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--logo-color-active);
+    animation: loading-bar 2s ease-in-out infinite;
+}
+
+@keyframes loading-bar {
+    0%,
+    100% {
+        transform: scaleX(0);
+    }
+    50% {
+        transform: scaleX(1);
+    }
+}
+
+/*------------------------------------------------------------------------------
+  Knob Design
+------------------------------------------------------------------------------*/
+.knob-container {
+    position: relative;
+    width: 220px;
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4));
+}
+
+.knob-outer-ring {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 2px solid var(--knob-base-color);
+    border-radius: 50%;
+    box-shadow:
+        inset 0 0 15px rgba(0, 0, 0, 0.6),
+        0 0 8px rgba(0, 0, 0, 0.3);
+    background: radial-gradient(
+        circle at 30% 30%,
+        rgba(170, 255, 17, 0.05) 0%,
+        transparent 70%
+    );
+}
+
+.knob-inner {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    background:
+        linear-gradient(135deg, var(--knob-base-color), #0f0f0f),
+        repeating-conic-gradient(
+            from 0deg at 50% 50%,
+            transparent 0deg,
+            rgba(255, 255, 255, 0.02) 1deg,
+            transparent 2deg
+        );
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+        0 6px 12px rgba(0, 0, 0, 0.5),
+        inset 0 2px 4px rgba(255, 255, 255, 0.08),
+        inset 0 -2px 4px rgba(0, 0, 0, 0.3);
+    cursor: grab;
+    transition: all 0.15s ease;
+    border: 1px solid rgba(170, 255, 17, 0.2);
+}
+
+.knob-inner:hover {
+    box-shadow:
+        0 8px 16px rgba(0, 0, 0, 0.6),
+        inset 0 2px 4px rgba(255, 255, 255, 0.12),
+        inset 0 -2px 4px rgba(0, 0, 0, 0.4);
+    border-color: rgba(170, 255, 17, 0.3);
+}
+
+.knob-inner:active {
+    cursor: grabbing;
+    transform: scale(0.98);
+}
+
+.knob-sticker {
+    width: 75%;
+    height: 75%;
+    background-image: url("../assets/stickers/rps.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: all 0.15s ease;
+    pointer-events: none;
+    filter: contrast(1.2) saturate(1.1) brightness(0.9);
+}
+
+.knob-indicator {
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 24px;
+    background: linear-gradient(
+        to bottom,
+        var(--logo-color-active) 0%,
+        rgba(255, 17, 51, 0.8) 70%,
+        rgba(255, 17, 51, 0.4) 100%
+    );
+    border-radius: 2px;
+    box-shadow:
+        0 0 6px rgba(255, 17, 51, 0.4),
+        inset 0 1px 1px rgba(255, 255, 255, 0.3);
+    pointer-events: none;
+    transition: box-shadow 0.2s ease;
+}
+
+/*------------------------------------------------------------------------------
+ Tooltip
+------------------------------------------------------------------------------*/
+.tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: default;
+    font-family: sans-serif;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(-50%) translateY(12px) scale(1);
+}
+
+.tooltip:hover .icon {
+    transform: scale(1.1) rotate(3deg);
+    box-shadow:
+        0 0 8px var(--tooltip-glow),
+        inset 0 0 6px rgba(255, 255, 255, 0.1);
+}
+
+.tooltip .icon {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(
+        135deg,
+        var(--color-knob-tooltip) 0%,
+        #0f1a02 50%,
+        var(--color-knob-tooltip) 100%
+    );
+    color: var(--color-logo-default-hover);
+    border-radius: 50%;
+    font-weight: bold;
+    box-shadow:
+        0 4px 8px rgba(0, 0, 0, 0.4),
+        inset 0 1px 2px rgba(255, 255, 255, 0.1),
+        0 0 0 2px rgba(170, 255, 17, 0.3);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.icon-text {
+    font-family: "Typepunk", sans-serif;
+    font-size: 18px;
+    z-index: 2;
+    position: relative;
+}
+
+.tooltiptext {
+    visibility: hidden;
+    width: 320px;
+    background: linear-gradient(
+        135deg,
+        var(--tooltip-background) 0%,
+        #0a1000 100%
+    );
+    color: var(--tooltip-text);
+    border-radius: 12px;
+    padding: 0;
+    position: absolute;
+    z-index: 1000;
+    top: 150%;
+    left: 50%;
+    transform: translateX(-50%) translateY(0px) scale(0.9);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    font-size: 0.9em;
+    line-height: 1.4;
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.6),
+        inset 0 1px 2px rgba(255, 255, 255, 0.1),
+        0 0 0 1px rgba(170, 255, 17, 0.3);
+    overflow: hidden;
+}
+
+.tooltiptext::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--tooltip-glow);
+    box-shadow: 0 0 4px var(--tooltip-glow);
+}
+
+.tooltiptext::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent transparent var(--color-knob-tooltip) transparent;
+    filter: drop-shadow(0 -2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.tooltip-header {
+    background: var(--color-logo-active);
+    color: var(--color-background);
+    padding: 12px 20px;
+    font-family: "Typepunk", sans-serif;
+    font-size: 1em;
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 1px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.tooltip-content {
+    padding: 16px 20px;
+}
+
+.tooltip-step {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    background: rgba(170, 255, 17, 0.05);
+    border-left: 3px solid var(--tooltip-glow);
+    transition: all 0.2s ease;
+}
+
+.tooltip-step:hover {
+    background: rgba(170, 255, 17, 0.08);
+    transform: translateX(2px);
+}
+
+.tooltip-step:last-child {
+    margin-bottom: 0;
+}
+
+.step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: var(--tooltip-glow);
+    color: var(--color-background);
+    border-radius: 50%;
+    font-size: 0.8em;
+    font-weight: bold;
+    margin-right: 14px;
+    flex-shrink: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.step-text {
+    font-family: "Typepunk", sans-serif;
+    font-size: 0.95em;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+}
+
+.tooltip-footer {
+    background: var(--color-knob-tooltip);
+    color: var(--tooltip-glow);
+    padding: 8px 20px;
+    text-align: center;
+    font-family: "Typepunk", sans-serif;
+    font-size: 0.8em;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    border-top: 1px solid rgba(170, 255, 17, 0.2);
+}
+
+/*------------------------------------------------------------------------------
+ Animations
+------------------------------------------------------------------------------*/
+@keyframes subtle-pulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.85;
+    }
+}
+
+@keyframes loading-pulse {
+    0%,
+    100% {
+        opacity: 1;
+        filter: brightness(1);
+    }
+    50% {
+        opacity: 0.7;
+        filter: brightness(1.2);
+    }
+}
+
+@keyframes subtle-shift {
+    0% {
+        transform: translateX(0px) translateY(0px);
+    }
+    100% {
+        transform: translateX(2px) translateY(1px);
+    }
+}
+
+/*------------------------------------------------------------------------------
+  Responsiveness
+------------------------------------------------------------------------------*/
+
+:root {
+    --scale-factor: 1;
+    --logo-base-size: 6.5em;
+    --knob-base-size: 220px;
+    --tooltip-base-width: 320px;
+    --gap-base: 50px;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    position: relative;
+    text-align: center;
+    gap: calc(var(--gap-base) * var(--scale-factor));
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+@media (min-width: 1400px) {
+    :root {
+        --scale-factor: 1.2;
+    }
+}
+
+@media (min-width: 1200px) and (max-width: 1399px) {
+    :root {
+        --scale-factor: 1.1;
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+    :root {
+        --scale-factor: 1;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    :root {
+        --scale-factor: 0.85;
+        --gap-base: 40px;
+    }
+
+    .logo-text {
+        font-size: calc(var(--logo-base-size) * var(--scale-factor));
+    }
+
+    .knob-container {
+        width: calc(var(--knob-base-size) * var(--scale-factor));
+        height: calc(var(--knob-base-size) * var(--scale-factor));
+    }
+
+    .knob-inner {
+        width: calc(180px * var(--scale-factor));
+        height: calc(180px * var(--scale-factor));
+    }
+
+    .knob-outer-ring {
+        width: calc(var(--knob-base-size) * var(--scale-factor));
+        height: calc(var(--knob-base-size) * var(--scale-factor));
+    }
+
+    .knob-indicator {
+        top: calc(6px * var(--scale-factor));
+        width: calc(4px * var(--scale-factor));
+        height: calc(24px * var(--scale-factor));
+    }
+
+    .tooltip .icon {
+        width: calc(36px * var(--scale-factor));
+        height: calc(36px * var(--scale-factor));
+    }
+
+    .icon-text {
+        font-size: calc(18px * var(--scale-factor));
+    }
+
+    .tooltiptext {
+        width: calc(var(--tooltip-base-width) * var(--scale-factor));
+        font-size: calc(0.9em * var(--scale-factor));
+    }
+}
+
+@media (min-width: 576px) and (max-width: 767px) {
+    :root {
+        --scale-factor: 0.7;
+        --gap-base: 35px;
+    }
+
+    .logo-text {
+        font-size: calc(var(--logo-base-size) * var(--scale-factor));
+    }
+
+    .knob-container {
+        width: calc(var(--knob-base-size) * var(--scale-factor));
+        height: calc(var(--knob-base-size) * var(--scale-factor));
+    }
+
+    .knob-inner {
+        width: calc(180px * var(--scale-factor));
+        height: calc(180px * var(--scale-factor));
+    }
+
+    .knob-outer-ring {
+        width: calc(var(--knob-base-size) * var(--scale-factor));
+        height: calc(var(--knob-base-size) * var(--scale-factor));
+    }
+
+    .knob-indicator {
+        top: calc(6px * var(--scale-factor));
+        width: calc(4px * var(--scale-factor));
+        height: calc(24px * var(--scale-factor));
+    }
+
+    .knob-sticker {
+        width: 48%;
+        height: 48%;
+    }
+
+    .tooltip .icon {
+        width: calc(36px * var(--scale-factor));
+        height: calc(36px * var(--scale-factor));
+    }
+
+    .icon-text {
+        font-size: calc(18px * var(--scale-factor));
+    }
+
+    .tooltiptext {
+        width: calc(280px);
+        font-size: 0.85em;
+    }
+
+    .tooltip-step {
+        padding: 7px 9px;
+        margin-bottom: 8px;
+    }
+
+    .step-number {
+        width: 22px;
+        height: 22px;
+        margin-right: 12px;
+    }
+
+    .step-text {
+        font-size: 0.9em;
+    }
+}
+
+@media (min-width: 400px) and (max-width: 575px) {
+    :root {
+        --scale-factor: 0.6;
+        --gap-base: 30px;
+    }
+
+    .logo-text {
+        font-size: calc(var(--logo-base-size) * var(--scale-factor));
+    }
+
+    .knob-container {
+        width: calc(var(--knob-base-size) * var(--scale-factor));
+        height: calc(var(--knob-base-size) * var(--scale-factor));
+    }
+
+    .knob-inner {
+        width: calc(180px * var(--scale-factor));
+        height: calc(180px * var(--scale-factor));
+    }
+
+    .knob-outer-ring {
+        width: calc(var(--knob-base-size) * var(--scale-factor));
+        height: calc(var(--knob-base-size) * var(--scale-factor));
+    }
+
+    .knob-indicator {
+        top: calc(5px * var(--scale-factor));
+        width: calc(4px * var(--scale-factor));
+        height: calc(22px * var(--scale-factor));
+    }
+
+    .knob-sticker {
+        width: 50%;
+        height: 50%;
+    }
+
+    .tooltip .icon {
+        width: calc(32px);
+        height: calc(32px);
+    }
+
+    .icon-text {
+        font-size: 16px;
+    }
+
+    .tooltiptext {
+        width: 260px;
+        font-size: 0.8em;
+    }
+
+    .tooltip-header {
+        padding: 10px 16px;
+        font-size: 0.9em;
+    }
+
+    .tooltip-content {
+        padding: 12px 16px;
+    }
+
+    .tooltip-step {
+        padding: 6px 8px;
+        margin-bottom: 7px;
+    }
+
+    .step-number {
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+        font-size: 0.7em;
+    }
+
+    .step-text {
+        font-size: 0.85em;
+    }
+
+    .tooltip-footer {
+        padding: 6px 16px;
+        font-size: 0.7em;
+    }
+}
+
+@media (max-width: 399px) {
+    :root {
+        --scale-factor: 0.5;
+        --gap-base: 25px;
+    }
+
+    .logo-text {
+        font-size: calc(var(--logo-base-size) * var(--scale-factor));
+    }
+
+    .knob-container {
+        width: calc(var(--knob-base-size) * var(--scale-factor));
+        height: calc(var(--knob-base-size) * var(--scale-factor));
+    }
+
+    .knob-inner {
+        width: calc(180px * var(--scale-factor));
+        height: calc(180px * var(--scale-factor));
+    }
+
+    .knob-outer-ring {
+        width: calc(var(--knob-base-size) * var(--scale-factor));
+        height: calc(var(--knob-base-size) * var(--scale-factor));
+    }
+
+    .knob-indicator {
+        top: calc(4px);
+        width: calc(3px);
+        height: calc(18px);
+    }
+
+    .knob-sticker {
+        width: 52%;
+        height: 52%;
+    }
+
+    .tooltip .icon {
+        width: 28px;
+        height: 28px;
+    }
+
+    .icon-text {
+        font-size: 14px;
+    }
+
+    .tooltiptext {
+        width: 240px;
+        font-size: 0.75em;
+    }
+
+    .tooltip-header {
+        padding: 8px 12px;
+        font-size: 0.8em;
+    }
+
+    .tooltip-content {
+        padding: 10px 12px;
+    }
+
+    .tooltip-step {
+        padding: 5px 6px;
+        margin-bottom: 6px;
+    }
+
+    .step-number {
+        width: 18px;
+        height: 18px;
+        margin-right: 8px;
+        font-size: 0.6em;
+    }
+
+    .step-text {
+        font-size: 0.8em;
+    }
+
+    .tooltip-footer {
+        padding: 5px 12px;
+        font-size: 0.65em;
+    }
+}
+
+@media (min-width: 1600px) {
+    :root {
+        --scale-factor: 1.3;
+    }
+}
+
+@media (max-height: 600px) {
+    :root {
+        --gap-base: 25px;
+    }
+
+    .app-container {
+        gap: calc(var(--gap-base) * var(--scale-factor));
+        padding: 15px;
+    }
+
+    .logo-text {
+        font-size: calc(var(--logo-base-size) * 0.8 * var(--scale-factor));
+    }
+
+    .knob-container {
+        width: calc(var(--knob-base-size) * 0.8 * var(--scale-factor));
+        height: calc(var(--knob-base-size) * 0.8 * var(--scale-factor));
+    }
+
+    .knob-inner {
+        width: calc(180px * 0.8 * var(--scale-factor));
+        height: calc(180px * 0.8 * var(--scale-factor));
+    }
+}
+
+@media (max-height: 500px) {
+    :root {
+        --gap-base: 15px;
+    }
+
+    .app-container {
+        gap: calc(var(--gap-base) * var(--scale-factor));
+        padding: 10px;
+    }
+
+    .logo-text {
+        font-size: calc(var(--logo-base-size) * 0.6 * var(--scale-factor));
+    }
+
+    .knob-container {
+        width: calc(var(--knob-base-size) * 0.6 * var(--scale-factor));
+        height: calc(var(--knob-base-size) * 0.6 * var(--scale-factor));
+    }
+
+    .knob-inner {
+        width: calc(180px * 0.6 * var(--scale-factor));
+        height: calc(180px * 0.6 * var(--scale-factor));
+    }
+}
+
+@media (orientation: landscape) and (max-height: 500px) and (max-width: 900px) {
+    .app-container {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 30px;
+        padding: 10px 20px;
+    }
+
+    .logo-text {
+        font-size: 2.5em;
+        margin: 0;
+        flex-shrink: 0;
+    }
+
+    .knob-container {
+        width: 120px;
+        height: 120px;
+        flex-shrink: 0;
+    }
+
+    .knob-inner {
+        width: 100px;
+        height: 100px;
+    }
+
+    .tooltip {
+        position: fixed;
+        bottom: 15px;
+        right: 15px;
+    }
+
+    .tooltiptext {
+        width: 200px;
+        font-size: 0.7em;
+        bottom: 100%;
+        top: auto;
+    }
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .knob-sticker {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+
+    .background-texture {
+        image-rendering: -webkit-optimize-contrast;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .background-texture {
+        animation: none;
+    }
+
+    .logo-text.active {
+        animation: none;
+    }
+}
+
+* {
+    will-change: auto;
+}
+
+.knob-inner,
+.logo-text {
+    will-change: transform;
+}

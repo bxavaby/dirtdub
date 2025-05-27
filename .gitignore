@@ -1,0 +1,16 @@
+tmp/
+temp/
+logs
+*.log
+pids
+*.pid
+*.seed
+*.pid.lock
+.npm
+*.tgz
+.yarn-integrity
+.env
+.live-server/
+*.backup
+*.bak
+*.orig

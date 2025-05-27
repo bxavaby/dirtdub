@@ -1,0 +1,24 @@
+:root {
+    --color-knob-tooltip: #0a0a1a; /* Static black */
+    --color-logo-default-hover: #ccccff; /* Electric white */
+    --color-logo-active: #ff6600; /* Shock orange */
+
+    --color-background: #0a0a1a;
+    --color-bg: var(--color-background);
+    --color-text: #ccccff;
+    --color-ink: var(--color-text);
+    --color-subtle-text: #ff6600;
+
+    --logo-color-default: var(--color-logo-default-hover);
+    --logo-color-active: var(--color-logo-active);
+    --logo-color-paused: var(--color-logo-default-hover);
+    --logo-color-loading: var(--color-knob-tooltip);
+
+    --knob-base-color: var(--color-knob-tooltip);
+    --tooltip-background: var(--color-knob-tooltip);
+    --tooltip-text: var(--color-logo-default-hover);
+    --tooltip-arrow-color: var(--color-knob-tooltip);
+
+    --dirt-accent: var(--color-logo-active);
+    --tooltip-glow: var(--color-logo-active);
+}

@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>d!irtdub</title>
+
+        <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href="./assets/favicon/apple-touch-icon.png"
+        />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="./assets/favicon/favicon-32x32.png"
+        />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="./assets/favicon/favicon-16x16.png"
+        />
+        <link rel="manifest" href="./assets/favicon/site.webmanifest" />
+        <link rel="shortcut icon" href="./assets/favicon/favicon.ico" />
+
+        <meta name="theme-color" content="#0c1600" />
+        <meta name="msapplication-TileColor" content="#0c1600" />
+        <meta
+            name="description"
+            content="One-knob audio degradation tool for underground musicians"
+        />
+
+        <link rel="stylesheet" href="./css/palette.css" />
+        <link rel="stylesheet" href="./css/style.css" />
+    </head>
+    <body>
+        <div class="app-container">
+            <div class="background-texture"></div>
+
+            <div id="logo-button" class="logo-text">D!RTDUB</div>
+
+            <div id="main-knob" class="knob-container">
+                <div class="knob-outer-ring"></div>
+                <div class="knob-inner">
+                    <div id="knob-sticker" class="knob-sticker"></div>
+                    <div class="knob-indicator"></div>
+                </div>
+            </div>
+
+            <div class="tooltip">
+                <div class="icon">
+                    <span class="icon-text">?</span>
+                </div>
+                <div class="tooltiptext">
+                    <div class="tooltip-header">HOW TO USE</div>
+                    <div class="tooltip-content">
+                        <div class="tooltip-step">
+                            <span class="step-number">1</span>
+                            <span class="step-text">CLICK/O TO LOAD</span>
+                        </div>
+                        <div class="tooltip-step">
+                            <span class="step-number">2</span>
+                            <span class="step-text"
+                                >HOVER/SPACEBAR TO PAUSE</span
+                            >
+                        </div>
+                        <div class="tooltip-step">
+                            <span class="step-number">3</span>
+                            <span class="step-text"
+                                >KEYBOARD: O/D/R/SB/ARROWS</span
+                            >
+                        </div>
+                    </div>
+                    <div class="tooltip-footer">DIRRRTYYIT!</div>
+                </div>
+            </div>
+
+            <input
+                type="file"
+                id="audio-file-input"
+                accept="audio/*"
+                style="display: none"
+            />
+        </div>
+
+        <script src="./js/performance.js"></script>
+        <script src="./js/knob.js"></script>
+        <script src="./js/main.js"></script>
+    </body>
+</html>
