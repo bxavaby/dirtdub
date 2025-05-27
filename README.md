@@ -4,7 +4,7 @@
 
 **One-knob audio degradation tool for underground musicians**
 
-<img src="assets/ss.png" alt="D!RTDUB Interface" width="600">
+<img src="ss/ss.png" alt="D!RTDUB Interface" width="600">
 
 <br><br>
 
