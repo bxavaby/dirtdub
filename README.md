@@ -20,21 +20,21 @@ Progressive audio destruction through bitcrushing, filtering, distortion, dropou
 
 ## Features
 
-**Single knob control** → 0% clean to 100% destroyed
-**Real-time processing** → Web Audio API + custom worklets
-**Auto-looping** → Short samples loop automatically
-**Responsive design** → Works on all devices
-**Zero latency** → No installation required
+- **Single knob control** → 0% clean to 100% destroyed
+- **Real-time processing** → Web Audio API + custom worklets
+- **Auto-looping** → Short samples loop automatically
+- **Responsive design** → Works on all devices
+- **Zero latency** → No installation required
 
 ## Effects
 
-Bitcrushing (16→6 bit)
-Sample rate reduction (44kHz→8kHz)
-Analog distortion
-High/low pass filtering
-Random dropouts
-Pitch modulation
-Pink noise injection
+- Bitcrushing (16→6 bit)
+- Sample rate reduction (44kHz→8kHz)
+- Analog distortion
+- High/low pass filtering
+- Random dropouts
+- Pitch modulation
+- Pink noise injection
 
 <br>
 
