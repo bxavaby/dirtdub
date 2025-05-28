@@ -36,6 +36,24 @@ body {
     gap: 50px;
 }
 
+.background-texture {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #0a0a1a;
+    background-image:
+        url("../assets/backgrounds/x6lzmo.png"),
+        url("./assets/backgrounds/x6lzmo.png"),
+        linear-gradient(135deg, #0a0a1a 0%, #0f1a02 50%, #0a0a1a 100%);
+    background-size: cover;
+    background-position: center;
+    opacity: 0.4;
+    z-index: -1;
+    animation: subtle-shift 20s ease-in-out infinite alternate;
+}
+
 /*------------------------------------------------------------------------------
   Logo
 ------------------------------------------------------------------------------*/
