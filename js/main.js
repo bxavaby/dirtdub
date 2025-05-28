@@ -28,7 +28,7 @@ const knobSticker = document.getElementById("knob-sticker");
 const knobIndicator = document.querySelector(".knob-indicator");
 
 function initAudio() {
-  const AudioContextClass = window.AudioContext || window.AudioContext;
+  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
   if (!AudioContextClass) {
     showUserMessage(
       "Your browser doesn't support Web Audio API. Please use a modern browser.",
@@ -39,12 +39,20 @@ function initAudio() {
   if (!audioContext) {
     try {
       audioContext = new AudioContextClass();
+
       if (audioContext.state === "suspended") {
-        audioContext.resume();
+        audioContext
+          .resume()
+          .then(() => {
+            console.log("Audio context resumed");
+          })
+          .catch((err) => {
+            console.error("Failed to resume audio context:", err);
+          });
       }
 
-      if (window.PerformanceEntry) {
-        performanceMonitor = new performanceMonitor();
+      if (window.PerformanceMonitor) {
+        performanceMonitor = new PerformanceMonitor();
         performanceMonitor.startMonitoring(audioContext);
       }
     } catch (error) {
@@ -280,8 +288,17 @@ function getMouseAngle(event, element) {
   return Math.atan2(deltaY, deltaX) * (180 / Math.PI);
 }
 
-logoButton.addEventListener("click", () => {
+logoButton.addEventListener("click", async () => {
   if (!audioContext) initAudio();
+
+  if (audioContext && audioContext.state === "suspended") {
+    try {
+      await audioContext.resume();
+      console.log("Audio context resumed on click");
+    } catch (err) {
+      console.error("Failed to resume audio context:", err);
+    }
+  }
 
   if (currentState !== AppState.IDLE) {
     stopAndResetAudio();
