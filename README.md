@@ -36,6 +36,7 @@
 ![OGG](https://img.shields.io/badge/OGG-ccccff?style=flat-square&logoColor=0a0a1a)
 ![FLAC](https://img.shields.io/badge/FLAC-ccccff?style=flat-square&logoColor=0a0a1a)
 ![M4A](https://img.shields.io/badge/M4A-ccccff?style=flat-square&logoColor=0a0a1a)
+![OPUS](https://img.shields.io/badge/OPUS-ccccff?style=flat-square&logoColor=0a0a1a)
 
 ────
 
